@@ -1,0 +1,25 @@
+angular_control:
+  pid: { p: 50.0, i: 1.0, d: 1.0, i_max: 0.0, i_min: 0.0, antiwindup: true, publish_state: true }
+wheels:
+  left_front:
+    pose: [ 0.1, 0.1, 0. ]
+    roller_angle: 0.785
+    joint: left_front_wheel_joint
+    <<: &wheel_setting
+      radius: 0.007
+      pid: { p: 0.8, i: 0, d: 0.0, i_max: 0.0, i_min: 0.0, antiwindup: true, publish_state: true }
+  right_front:
+    pose: [ 0.1, -0.1, 0. ]
+    roller_angle: -0.785
+    joint: right_front_wheel_joint
+    <<: *wheel_setting
+  left_back:
+    pose: [ -0.1, 0.1, 0. ]
+    roller_angle: -0.785
+    joint: left_back_wheel_joint
+    <<: *wheel_setting
+  right_back:
+    pose: [ -0.1, -0.1, 0. ]
+    roller_angle: 0.785
+    joint: right_back_wheel_joint
+    <<: *wheel_setting

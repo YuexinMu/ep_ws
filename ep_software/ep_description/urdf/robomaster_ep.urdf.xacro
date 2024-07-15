@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot name="robomaster_ep" xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#xacro">
+
+  <xacro:arg name="name" default=""/>
+  <xacro:arg name="load_odom_sim" default="true"/>
+  <xacro:arg name="use_sim" default="true"/>
+
+  <xacro:property name="_name" value="$(arg name)"/>
+  <xacro:if value="${_name != ''}">
+    <xacro:property name="tf_prefix" value="${_name}/"/>
+  </xacro:if>
+  <xacro:if value="${_name == ''}">
+    <xacro:property name="tf_prefix" value=""/>
+  </xacro:if>
+  <xacro:arg name="camera_yaw" default="0.0"/>
+
+  <xacro:include filename="chassis.urdf.xacro"/>
+<!--  <xacro:include filename="arm.urdf.xacro"/>-->
+<!--  <xacro:include filename="camera.urdf.xacro"/>-->
+<!--  <xacro:include filename="gripper.urdf.xacro"/>-->
+<!--  <xacro:include filename="intelligent_controller.urdf.xacro"/>-->
+<!--  <xacro:include filename="extension.urdf.xacro"/>-->
+<!--  <xacro:include filename="tof.urdf.xacro"/>-->
+
+  <xacro:chassis tf_prefix="${tf_prefix}"/>
+<!--  <xacro:extension tf_prefix="${tf_prefix}" use_rear_extension="true"/>-->
+<!--  <xacro:intelligent_controller tf_prefix="${tf_prefix}" mount="extension"/>-->
+<!--  <xacro:arm tf_prefix="${tf_prefix}"/>-->
+<!--  <xacro:camera tf_prefix="${tf_prefix}" mount="arm" camera_yaw="$(arg camera_yaw)"/>-->
+<!--  <xacro:gripper tf_prefix="${tf_prefix}"/>-->
+
+<!--  <xacro:add_tof index="0" tf_prefix="${tf_prefix}"/>-->
+<!--  <xacro:add_tof index="1" tf_prefix="${tf_prefix}"/>-->
+<!--  <xacro:add_tof index="2" tf_prefix="${tf_prefix}"/>-->
+<!--  <xacro:add_tof index="3" tf_prefix="${tf_prefix}"/>-->
+
+  <xacro:if value="$(arg use_sim)">
+<!--    <xacro:if value="$(arg load_odom_sim)">-->
+<!--      &lt;!&ndash; odom sim plugin &ndash;&gt;-->
+<!--      <gazebo>-->
+<!--        <plugin name="sct_odom_sim" filename="libep_odom_sim.so">-->
+<!--          <publish_rate>50.0</publish_rate>-->
+<!--          <robot_namespace>$(arg robot_ns)</robot_namespace>-->
+<!--        </plugin>-->
+<!--      </gazebo>-->
+<!--    </xacro:if>-->
+
+    <gazebo>
+      <plugin name="sct_ros_control" filename="libep_robot_hw_sim.so">
+        <robotNamespace>/</robotNamespace>
+        <robotSimType>ep_gazebo/EpRobotHWSim</robotSimType>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+</robot>

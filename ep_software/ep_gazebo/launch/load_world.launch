@@ -1,0 +1,33 @@
+<launch>
+
+<!--     <arg name="world_select" default="task" doc="empty task"/> -->
+    <arg name="robot_name" default="ep" doc="Robot name: ep"/>
+    <arg name="use_sim" default="false"/>
+    <arg name="paused" default="false"/>
+<!--  false true    -->
+
+
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="world_name" value="$(find ep_gazebo)/worlds/empty_world.world"/>
+    </include>
+    <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find ep_gazebo)/models/task_model/model.sdf -sdf -model task_model"/>
+
+    <!-- get ep-control sim plugins -->
+    <rosparam file="$(find ep_gazebo)/config/ep_hw_sim.yaml" command="load" if="$(arg use_sim)"/>
+
+
+    <!-- set robot_description -->
+    <param name="robot_description"
+           command="$(find xacro)/xacro $(find ep_description)/urdf/robomaster_ep.urdf.xacro use_sim:=true"/>
+    <!-- spawn robot model -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" clear_params="true"
+        args="-x 5.2 -y 0 -z 0.2 -param robot_description -urdf -model $(arg robot_name)" output="screen"/>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+          respawn="false" output="screen">
+    </node>
+
+</launch>

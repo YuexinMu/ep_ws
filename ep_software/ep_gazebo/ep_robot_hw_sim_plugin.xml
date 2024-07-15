@@ -1,0 +1,10 @@
+<library path="lib/libep_robot_hw_sim">
+    <class
+            name="ep_gazebo/EpRobotHWSim"
+            type="ep_gazebo::EpRobotHWSim"
+            base_class_type="gazebo_ros_control::RobotHWSim">
+        <description>
+            The ep robot simulation interface.
+        </description>
+    </class>
+</library>
